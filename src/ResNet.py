@@ -108,7 +108,7 @@ class ResNet(torch.nn.Module):
 
         return y_preds
 
-    def train_net(self, dataset, max_epoch, batch_size, w=1.0, lr=1e-3, model_path=None):
+    def train_net(self, dataset, max_epoch, batch_size, w=1.0, lr=1e-3, model_path=None, tol=1e-8):
         """
         :param dataset: a dataset object
         :param max_epoch: maximum number of epochs
@@ -116,6 +116,7 @@ class ResNet(torch.nn.Module):
         :param w: l2 error weight
         :param lr: learning rate
         :param model_path: path to save the model
+        :param tol: loss tolerance, training will stop then this is reached
         :return: None
         """
         # check consistency
