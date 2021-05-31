@@ -138,7 +138,7 @@ class ResNet(torch.nn.Module):
             val_loss = self.calculate_loss(dataset.val_x, dataset.val_ys, w=w)
             # ================ early stopping =================
             if best_loss <= tol:
-                print('--> model has reached an accuracy of 1e-8! Finished training!')
+                print('--> model has reached an accuracy of {}! Finished training!'.format(tol))
                 break
             # =================== backward ====================
             optimizer.zero_grad()
