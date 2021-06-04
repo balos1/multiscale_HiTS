@@ -189,7 +189,7 @@ def multi_scale_forecast(x_init, n_steps, models):
     :param n_steps: number of steps forward in terms of dt
     :param models: a list of models
     :return: a torch array of size n_test x n_steps x n_dim
-    
+
     This function is not used in the paper for low efficiency,
     we suggest to use vectorized_multi_scale_forecast() below.
     """
@@ -264,6 +264,7 @@ def vectorized_multi_scale_forecast(x_init, n_steps, models):
     preds[:, 0, :] = x_init
     total_step_sizes = n_steps
     for model in models:
+        model.to(device)
         n_forward = int(total_step_sizes/model.step_size)
         y_prev = preds[:, indices, :].reshape(-1, n_dim)
         indices_lists = [indices]
@@ -288,7 +289,7 @@ def vectorized_multi_scale_forecast(x_init, n_steps, models):
 
     # interpolations
     sample_steps = range(1, n_steps+1)
-    valid_preds = preds[:, indices, :].detach().numpy()
+    valid_preds = preds[:, indices, :].cpu().detach().numpy()
     cs = scipy.interpolate.interp1d(indices, valid_preds, kind='linear', axis=1)
     y_preds = torch.tensor(cs(sample_steps)).float()
 
